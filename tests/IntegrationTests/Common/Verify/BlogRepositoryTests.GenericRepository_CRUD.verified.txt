@@ -1,0 +1,26 @@
+﻿[
+  {
+    Id: 1,
+    Name: Clean Coder,
+    AuthorName: {
+      First: Robert,
+      Last: Martin
+    }
+  },
+  {
+    Id: 2,
+    Name: Ardalis,
+    AuthorName: {
+      First: Steve,
+      Last: Smith
+    }
+  },
+  {
+    Id: 3,
+    Name: CodeOpinion,
+    AuthorName: {
+      First: Derek,
+      Last: Comartin
+    }
+  }
+]

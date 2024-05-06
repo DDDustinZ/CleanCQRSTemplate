@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  mockServer:
+    image: mockserver/mockserver:5.14.0
+    ports:
+      - "1080:1080"
+    environment:
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializerJson.json
+    volumes:
+      - type: bind
+        source: ./test/IntegrationTests/MockServer
+        target: /config
