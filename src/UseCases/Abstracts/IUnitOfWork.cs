@@ -5,5 +5,5 @@ namespace COMPANY_NAME.PRODUCT.UseCases.Abstracts;
 public interface IUnitOfWork
 {
     public IBlogRepository BlogRepository { get; }
-    Task<int> SaveChangesAsync();
+    Task<int> SaveChangesAsync(CancellationToken ct);
 }

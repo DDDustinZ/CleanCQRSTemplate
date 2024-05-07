@@ -27,6 +27,6 @@ public class CreateNewBlogTests
             blog.Name == request.Name && 
             blog.AuthorName.First == request.AuthorFirstName &&
             blog.AuthorName.Last == request.AuthorLastName)));
-        unitOfWorkMock.Verify(x => x.SaveChangesAsync());
+        unitOfWorkMock.Verify(x => x.SaveChangesAsync(CancellationToken.None));
     }
 }

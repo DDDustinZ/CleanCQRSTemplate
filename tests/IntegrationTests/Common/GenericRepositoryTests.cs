@@ -19,14 +19,14 @@ public abstract class GenericRepositoryTests<TRepo, TEntity, TId>(IntegrationDbF
     [AutoMoqData(typeof(IgnoreEntityIdBuilder))]
     public async Task GenericRepository_CRUD(TEntity newEntity, TEntity updateEntity)
     {
-        var all = await Sut.GetAllAsync();
+        var all = await Sut.GetAllAsync(CancellationToken.None);
         await Verify(all, VerifySettingsFactory.Default);
 
         Sut.Add(newEntity);
         await DbContext.SaveChangesAsync();
 
         DbContext.ChangeTracker.Clear();
-        var hydratedEntity = await Sut.GetByIdAsync(newEntity.Id);
+        var hydratedEntity = await Sut.GetByIdAsync(newEntity.Id, CancellationToken.None);
         ReferenceEquals(newEntity, hydratedEntity).Should().BeFalse();
         newEntity.Should().BeEquivalentTo(hydratedEntity);
 
@@ -36,7 +36,7 @@ public abstract class GenericRepositoryTests<TRepo, TEntity, TId>(IntegrationDbF
         await DbContext.SaveChangesAsync();
 
         DbContext.ChangeTracker.Clear();
-        var hydratedUpdatedEntity = await Sut.GetOneAsync(x => x.Id!.Equals(updateEntity.Id));
+        var hydratedUpdatedEntity = await Sut.GetOneAsync(x => x.Id!.Equals(updateEntity.Id), CancellationToken.None);
         ReferenceEquals(updateEntity, hydratedUpdatedEntity).Should().BeFalse();
         updateEntity.Should().BeEquivalentTo(hydratedUpdatedEntity);
 
@@ -44,7 +44,7 @@ public abstract class GenericRepositoryTests<TRepo, TEntity, TId>(IntegrationDbF
         Sut.Delete(updateEntity);
         await DbContext.SaveChangesAsync();
 
-        var refreshedAll = await Sut.GetAllAsync();
+        var refreshedAll = await Sut.GetAllAsync(CancellationToken.None);
         all.Should().BeEquivalentTo(refreshedAll);
     }
 }

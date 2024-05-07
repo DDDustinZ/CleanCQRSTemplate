@@ -8,11 +8,11 @@ public record CreateNewBlogCommand(string Name, string AuthorFirstName, string A
 
 public class CreateNewBlogHandler : CommandHandler<CreateNewBlogCommand, int>
 {
-    public override async Task<int> Handle(CreateNewBlogCommand request, CancellationToken cancellationToken)
+    public override async Task<int> Handle(CreateNewBlogCommand request, CancellationToken ct)
     {
         var newBlog = Blog.NewBlog(request.Name, new AuthorName(request.AuthorFirstName, request.AuthorLastName));
         UnitOfWork.BlogRepository.Add(newBlog);
-        await UnitOfWork.SaveChangesAsync();
+        await UnitOfWork.SaveChangesAsync(ct);
         return newBlog.Id;
     }
 }

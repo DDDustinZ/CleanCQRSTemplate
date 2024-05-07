@@ -7,5 +7,5 @@ public abstract class QueryHandler<TCommand, TResponse> : IRequestHandler<TComma
 {
     [SetterProperty]
     public required IReadContext ReadContext { get; init; }
-    public abstract Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken);
+    public abstract Task<TResponse> Handle(TCommand request, CancellationToken ct);
 }

@@ -12,12 +12,12 @@ public record GetBlogByIdQuery(int Id) : IRequest<GetBlogByIdQuery.Result>
 
 public class GetBlogByIdHandler : QueryHandler<GetBlogByIdQuery, GetBlogByIdQuery.Result>
 {
-    public override async Task<GetBlogByIdQuery.Result> Handle(GetBlogByIdQuery request, CancellationToken cancellationToken)
+    public override async Task<GetBlogByIdQuery.Result> Handle(GetBlogByIdQuery request, CancellationToken ct)
     {
          var result = await ReadContext.Blogs
              .Where(x => x.Id == request.Id)
              .Select(x => new GetBlogByIdQuery.Result(x.Name, x.AuthorName.Last))
-             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+             .FirstOrDefaultAsync(cancellationToken: ct);
 
          if (result == null)
          {

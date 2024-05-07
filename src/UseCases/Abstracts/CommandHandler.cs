@@ -7,5 +7,5 @@ public abstract class CommandHandler<TCommand, TResponse> : IRequestHandler<TCom
 {
     [SetterProperty]
     public required IUnitOfWork UnitOfWork { get; init; }
-    public abstract Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken);
+    public abstract Task<TResponse> Handle(TCommand request, CancellationToken ct);
 }

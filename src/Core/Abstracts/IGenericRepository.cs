@@ -4,10 +4,10 @@ namespace COMPANY_NAME.PRODUCT.Core.Abstracts;
 
 public interface IGenericRepository<TEntity, in TId> where TEntity : IEntity<TId>
 {
-    Task<IEnumerable<TEntity>> GetAllAsync();
-    Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter);
-    Task<TEntity?> GetByIdAsync(TId id);
-    Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> filter);
+    Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ct);
+    Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, CancellationToken ct);
+    Task<TEntity?> GetByIdAsync(TId id, CancellationToken ct);
+    Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> filter, CancellationToken ct);
     void Add(TEntity entity);
     void AddAll(IEnumerable<TEntity> entities);
     void Delete(TEntity entity);

@@ -14,24 +14,24 @@ public abstract class GenericRepository<TEntity, TId> : IGenericRepository<TEnti
         _context = context;
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ct)
     {
-        return await _context.Set<TEntity>().ToListAsync();
+        return await _context.Set<TEntity>().ToListAsync(ct);
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter)
+    public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter, CancellationToken ct)
     {
-        return await _context.Set<TEntity>().Where(filter).ToListAsync();
+        return await _context.Set<TEntity>().Where(filter).ToListAsync(ct);
     }
 
-    public async Task<TEntity?> GetByIdAsync(TId id)
+    public async Task<TEntity?> GetByIdAsync(TId id, CancellationToken ct)
     {
-        return await _context.Set<TEntity>().FindAsync(id);
+        return await _context.Set<TEntity>().FindAsync([id], ct);
     }
 
-    public async Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> filter)
+    public async Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>> filter, CancellationToken ct)
     {
-        return await _context.Set<TEntity>().Where(filter).SingleOrDefaultAsync();
+        return await _context.Set<TEntity>().Where(filter).SingleOrDefaultAsync(ct);
     }
 
     public void Add(TEntity entity)

@@ -16,8 +16,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IBlogRepository BlogRepository { get; }
     
-    public async Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync(CancellationToken ct)
     {
-        return await _dbContext.SaveChangesAsync();
+        return await _dbContext.SaveChangesAsync(ct);
     }
 }
