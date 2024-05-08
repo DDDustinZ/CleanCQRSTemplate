@@ -17,7 +17,7 @@ public class GetBlogTests(EndpointFixture fixture) : TestBase<EndpointFixture>
     {
         var request = new GetBlog.Request(-1);
         
-        var (response, actual) = await fixture.Client.GETAsync<GetBlog, GetBlog.Request, ErrorResponse>(request);
+        var (response, actual) = await fixture.Client.GETAsync<GetBlog.Request, ErrorResponse>("/api/blog/{id}", request);
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         actual.Errors.Count.Should().Be(1);
@@ -38,7 +38,7 @@ public class GetBlogTests(EndpointFixture fixture) : TestBase<EndpointFixture>
             .Setup(x => x.Send(query, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
         
-        var (response, actual) = await fixture.Client.GETAsync<GetBlog, GetBlog.Request, GetBlogByIdQuery.Result>(request);
+        var (response, actual) = await fixture.Client.GETAsync<GetBlog.Request, GetBlogByIdQuery.Result>("/api/blog/{id}", request);
         
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         actual.Should().Be(expected);

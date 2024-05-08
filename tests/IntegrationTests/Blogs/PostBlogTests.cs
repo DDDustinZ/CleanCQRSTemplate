@@ -17,7 +17,7 @@ public class PostBlogTests(EndpointFixture fixture) : TestBase<EndpointFixture>
     {
         var request = new PostBlog.Request("", "", "");
         
-        var (response, actual) = await fixture.Client.POSTAsync<PostBlog, PostBlog.Request, ErrorResponse>(request);
+        var (response, actual) = await fixture.Client.POSTAsync<PostBlog.Request, ErrorResponse>("/api/blog", request);
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         actual.Errors.Count.Should().Be(3);
@@ -38,7 +38,7 @@ public class PostBlogTests(EndpointFixture fixture) : TestBase<EndpointFixture>
             .Setup(x => x.Send(command, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
         
-        var response = await fixture.Client.POSTAsync<PostBlog, PostBlog.Request>(request);
+        var (response, _) = await fixture.Client.POSTAsync<PostBlog.Request, EmptyResponse>("/api/blog", request);
         
         response.StatusCode.Should().Be(HttpStatusCode.Created);
         response.Headers.Location.Should().Be($"/api/blog/{expected}");
