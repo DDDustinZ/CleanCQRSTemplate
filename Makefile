@@ -32,7 +32,7 @@ stop:
  
 run: stop
 	docker run -d -p 8080:8080 -p 8081:8081 \
-		-e ConnectionStrings__DbContext='Data Source=$(SQL_HOST),$(SQL_PORT);Persist Security Info=True;Initial Catalog=$(DB_NAME);User ID=$(sqlUsername);Password=$(sqlPassword);TrustServerCertificate=True' \
+		-e ConnectionStrings__DbContext='Data Source=$(SQL_HOST),$(SQL_PORT);Persist Security Info=True;Initial Catalog=$(DB_NAME);User ID=$(SQL_HOST);Password=$(SQL_PORT);TrustServerCertificate=True' \
 		--name product-app \
 		product-app
 
