@@ -13,6 +13,7 @@
 9) Update `DB_NAME` in `create-local-dbs.sql`
 10) Update `DB_NAME` in `appsettings.json`
 11) Update `DB_NAME` in `IntegrationDbFixture` and `FunctionalDbFixture`
+12) Delete `/src/Infrastructure/Migrations` folder
 ---
 
 # Architecture/Tooling
@@ -35,7 +36,7 @@
 - [FluentAssertions](https://fluentassertions.com/) for easy to read test assertions
 - [Respawn](https://github.com/jbogard/Respawn) for resetting the DB to a known state before test execution
 - [Verify](https://github.com/VerifyTests/Verify) for snapshot assertions
-- [Bogus](https://github.com/bchavez/Bogus) is provided from the FastEndpoint.Testing base classes
+- [Bogus](https://github.com/bchavez/Bogus) is provided from the `FastEndpoint.Testing` base classes
 
 # Project Setup
 
