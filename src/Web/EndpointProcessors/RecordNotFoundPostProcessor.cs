@@ -16,11 +16,10 @@ public class RecordNotFoundPostProcessor : IGlobalPostProcessor
         context.MarkExceptionAsHandled();
 
         var exception = (RecordNotFoundException) context.ExceptionDispatchInfo.SourceException;
-        var response = new InternalErrorResponse
+        var response = new ErrorResponse
         {
-            Status = "Record Not Found!",
-            Code = (int) HttpStatusCode.NotFound,
-            Reason = exception.Message
+            Message = exception.Message,
+            StatusCode = (int) HttpStatusCode.NotFound
         };
         
         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;

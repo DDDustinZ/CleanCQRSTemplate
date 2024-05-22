@@ -23,12 +23,10 @@ public class RecordNotFoundPostProcessorTests(EndpointFixture fixture) : TestBas
             .Setup(x => x.Map<GetBlogByIdQuery>(It.IsAny<object>()))
             .Throws(exception);
         
-        var (response, actual) = await fixture.Client.GETAsync<GetBlog, GetBlog.Request, InternalErrorResponse>(request);
+        var (response, actual) = await fixture.Client.GETAsync<GetBlog, GetBlog.Request, ErrorResponse>(request);
         
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        actual.Status.Should().Be("Record Not Found!");
-        actual.Code.Should().Be(404);
-        actual.Reason.Should().Be(exception.Message);
-        actual.Note.Should().BeNull();
+        actual.Message.Should().Be(exception.Message);
+        actual.StatusCode.Should().Be(404);
     }
 }
