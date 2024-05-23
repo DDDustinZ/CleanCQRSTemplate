@@ -1,16 +1,18 @@
 using System.Reflection;
 using COMPANY_NAME.PRODUCT.Infrastructure.Data;
+using COMPANY_NAME.PRODUCT.ServiceDefaults;
 using COMPANY_NAME.PRODUCT.Web.EndpointProcessors;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using JasperFx.Core;
 using Lamar.Microsoft.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.SystemConsole.Themes;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 var assemblies = new[]
 {
@@ -33,10 +35,7 @@ builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument();
 builder.Services.AddAutoMapper(assemblies);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext"));
-});
+builder.AddSqlServerDbContext<AppDbContext>("db");
 builder.Services.AddSerilog(lc =>
 {
     lc.ReadFrom.Configuration(builder.Configuration);
@@ -49,6 +48,8 @@ builder.Services.AddSerilog(lc =>
 });
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();

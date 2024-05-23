@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>cc6bf9ce-c30c-4a53-a71f-ebdd2f6bb60f</UserSecretsId>
+    <RootNamespace>COMPANY_NAME.PRODUCT..AppHost</RootNamespace>
+    <AssemblyName>COMPANY_NAME.PRODUCT.AppHost</AssemblyName>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.1" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\build\DbMigrationService\DbMigrationService.csproj" />
+    <ProjectReference Include="..\src\Web\Web.csproj" />
+  </ItemGroup>
+
+</Project>
