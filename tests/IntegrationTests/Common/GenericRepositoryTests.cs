@@ -1,5 +1,6 @@
 ﻿using COMPANY_NAME.PRODUCT.Core.Abstracts;
 using COMPANY_NAME.PRODUCT.Infrastructure.Data;
+using COMPANY_NAME.PRODUCT.Infrastructure.Data.Repositories;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using UnitTests.Common;
@@ -9,8 +10,8 @@ namespace IntegrationTests.Common;
 
 public abstract class GenericRepositoryTests<TRepo, TEntity, TId>(IntegrationDbFixture fixture)
     : IntegrationDbTestBase(fixture)
-    where TRepo : IGenericRepository<TEntity, TId>
-    where TEntity : IEntity<TId>
+    where TRepo : GenericRepository<TEntity, TId>
+    where TEntity : class, IEntity<TId>
 {
     protected TRepo Sut { get; } = fixture.Services.GetRequiredService<TRepo>();
     protected AppDbContext DbContext { get; } = fixture.Services.GetRequiredService<AppDbContext>();

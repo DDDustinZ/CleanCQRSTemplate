@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace COMPANY_NAME.PRODUCT.Infrastructure.Data.Repositories;
 
-public abstract class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId>
+public abstract class GenericRepository<TEntity, TId>
     where TEntity : class, IEntity<TId>
 {
     private readonly AppDbContext _context;
