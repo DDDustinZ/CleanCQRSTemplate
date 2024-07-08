@@ -40,6 +40,24 @@ clean: stop
 	docker compose -p shared down
 	docker compose -p product-deps down
 
+test:
+	docker build . -f src/Web/Dockerfile --no-cache --label temp --target test \
+    		--build-arg SQL_HOST=$(SQL_HOST) \
+    		--build-arg SQL_PORT=$(SQL_PORT) \
+    		--build-arg SQL_USERNAME=$(SQL_USERNAME) \
+    		--build-arg SQL_PASSWORD=$(SQL_PASSWORD) \
+    		--build-arg DB_NAME=$(DB_NAME)
+	docker image prune --filter label=temp --force
+
+coverage:
+	docker build . -f src/Web/Dockerfile --no-cache --label temp --output tests/TestResults --target test-coverage \
+    		--build-arg SQL_HOST=$(SQL_HOST) \
+    		--build-arg SQL_PORT=$(SQL_PORT) \
+    		--build-arg SQL_USERNAME=$(SQL_USERNAME) \
+    		--build-arg SQL_PASSWORD=$(SQL_PASSWORD) \
+    		--build-arg DB_NAME=$(DB_NAME)
+	docker image prune --filter label=temp --force
+
 install:
 	-dotnet tool update --global dotnet-ef
 
@@ -51,12 +69,3 @@ migration-remove:
 
 db-script:
 	dotnet ef migrations script --idempotent --project .\src\Infrastructure\Infrastructure.csproj --startup-project .\src\Web\Web.csproj
-
-test:
-	docker build . -f src/Web/Dockerfile --no-cache --label temp --target test \
-    		--build-arg SQL_HOST=$(SQL_HOST) \
-    		--build-arg SQL_PORT=$(SQL_PORT) \
-    		--build-arg SQL_USERNAME=$(SQL_USERNAME) \
-    		--build-arg SQL_PASSWORD=$(SQL_PASSWORD) \
-    		--build-arg DB_NAME=$(DB_NAME)
-	docker image prune --filter label=temp --force

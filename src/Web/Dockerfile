@@ -21,7 +21,18 @@ ARG SQL_PASSWORD
 ARG DB_NAME
 ENV ConnectionStrings__DbContext="Initial Catalog=$DB_NAME;Server=$SQL_HOST,$SQL_PORT;Persist Security Info=False;User ID=$SQL_USERNAME;Password=$SQL_PASSWORD;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;"
 
-RUN dotnet test PRODUCT.sln
+RUN dotnet test tests/UnitTests/UnitTests.csproj --results-directory "tests/TestResults" --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+RUN dotnet test tests/IntegrationTests/IntegrationTests.csproj --results-directory "tests/TestResults" --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+RUN dotnet test tests/FunctionalTests/FunctionalTests.csproj --results-directory "tests/TestResults" --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+
+FROM test as report-generator
+
+RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /bin
+RUN reportgenerator -reports:"/repo/tests/TestResults/**/coverage.opencover.xml" -targetdir:"tests/TestResults" -reporttypes:"Cobertura;TextSummary"
+
+FROM scratch as test-coverage
+COPY --from=report-generator /repo/tests/TestResults/Cobertura.xml .
+COPY --from=report-generator /repo/tests/TestResults/Summary.txt .
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release

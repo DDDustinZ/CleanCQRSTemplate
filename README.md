@@ -67,7 +67,8 @@ To run a target, simply type `make` followed by the target. i.e. `make build` wi
 - `run` - starts a container of the latest app image
 - `stop` - stops and removes the app container
 - `clean` - runs the `stop` target and tears downs docker compose images
-- `test` - runs all tests in the solution within the docker image as the build
+- `test` - runs all tests within the docker image as the build
+- `coverage` - runs all tests and collects coverage results in `tests/TestResults`
 - `install` - installs required tools
 - `migration` - with parameter `name=<name>` will create a new EF migration with name
 - `migration-remove` - removes the last migration
