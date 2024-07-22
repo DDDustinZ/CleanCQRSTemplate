@@ -1,14 +1,14 @@
 using System.Reflection;
 using COMPANY_NAME.PRODUCT.Infrastructure.Data;
+using COMPANY_NAME.PRODUCT.Web;
 using COMPANY_NAME.PRODUCT.Web.EndpointProcessors;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using JasperFx.Core;
 using Lamar.Microsoft.DependencyInjection;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Serilog.Formatting.Json;
-using Serilog.Sinks.SystemConsole.Themes;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,20 +37,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext"));
 });
-builder.Services.AddSerilog(lc =>
-{
-    lc.ReadFrom.Configuration(builder.Configuration);
-    lc.Enrich.FromLogContext();
-    lc.Enrich.WithMachineName();
-    lc.Enrich.WithProcessId();
-    lc.Enrich.WithThreadId();
-    lc.WriteTo.Conditional(_ => !builder.Environment.IsDevelopment(), x => x.Console(new JsonFormatter()));
-    lc.WriteTo.Conditional(_ => builder.Environment.IsDevelopment(), x => x.Console(theme: ConsoleTheme.None));
-});
+builder.AddLogging();
+builder.Services.AddHealthChecks()
+    .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
 
 var app = builder.Build();
 
-app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseDefaultExceptionHandler();
 app.UseFastEndpoints(options =>
@@ -63,6 +55,11 @@ app.UseFastEndpoints(options =>
     };
 });
 app.UseSwaggerGen();
+app.MapHealthChecks("/health");
+app.MapHealthChecks("/alive", new HealthCheckOptions
+{
+    Predicate = r => r.Tags.Contains("live")
+});
 
 app.Run();
 
