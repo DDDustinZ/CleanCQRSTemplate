@@ -41,6 +41,8 @@ public class GetBlog : Endpoint<GetBlog.Request, GetBlogByIdQuery.Result>
     {
         Get("/{Id}");
         Group<BlogGroup>();
+        Description(builder => builder
+            .Produces<ErrorResponse>(404, "application/problem+json"));
     }
 
     public override async Task HandleAsync(Request req, CancellationToken ct)

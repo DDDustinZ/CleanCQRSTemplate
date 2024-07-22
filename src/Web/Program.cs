@@ -59,6 +59,7 @@ app.UseFastEndpoints(options =>
     options.Endpoints.Configurator = ep =>
     {
         ep.PostProcessor<RecordNotFoundPostProcessor>(Order.After);
+        ep.Description(routeHandlerBuilder => routeHandlerBuilder.ProducesProblemFE<InternalErrorResponse>(500));
     };
 });
 app.UseSwaggerGen();
