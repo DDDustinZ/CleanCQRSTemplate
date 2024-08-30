@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		schema.Dockerfile = schema.Dockerfile
 		shared-compose.yml = shared-compose.yml
 		coverlet.runsettings = coverlet.runsettings
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCases", "src\UseCases\UseCases.csproj", "{14968B48-C9E3-40E1-9243-C898AF2EBA55}"
