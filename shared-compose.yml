@@ -9,3 +9,16 @@ services:
     ports:
       - "1433:1433"
     restart: always
+  emulator:
+    container_name: "servicebus-emulator"
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    volumes:
+      - "./service-bus-config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    ports:
+      - "5672:5672"
+    environment:
+      SQL_SERVER: db
+      MSSQL_SA_PASSWORD: "Localp@55"
+      ACCEPT_EULA: "Y"
+    depends_on:
+      - db

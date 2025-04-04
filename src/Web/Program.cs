@@ -5,6 +5,7 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using JasperFx.Core;
 using Lamar.Microsoft.DependencyInjection;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Formatting.Json;
@@ -46,6 +47,15 @@ builder.Services.AddSerilog(lc =>
     lc.Enrich.WithThreadId();
     lc.WriteTo.Conditional(_ => !builder.Environment.IsDevelopment(), x => x.Console(new JsonFormatter()));
     lc.WriteTo.Conditional(_ => builder.Environment.IsDevelopment(), x => x.Console(theme: ConsoleTheme.None));
+});
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingAzureServiceBus((context, cfg) =>
+    {
+        cfg.Host("Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true");
+    });
+    
+    x.AddConsumers(assemblies);
 });
 
 var app = builder.Build();
